@@ -1,0 +1,5 @@
+SELECT * FROM studentmanagementsystem.sms1;
+INSERT INTO `studentmanagementsystem`.`sms1` (`id`, `namestd`, `mssv`, `phone`, `address`, `age`, `email`) VALUES ('1', 'Nguyen van A', '1234567', '7654321', 'Hanoi', '16', 'abcxyz@gmail.com');
+INSERT INTO `studentmanagementsystem`.`sms1` (`id`, `namestd`, `mssv`, `phone`, `address`, `age`, `email`) VALUES ('2', 'Nguyen B', '23456789', '8765432', 'Danang', '17', 'xyzabc@gmail.com');
+INSERT INTO `studentmanagementsystem`.`sms1` (`id`, `namestd`, `mssv`, `phone`, `address`, `age`, `email`) VALUES ('3', 'Nguyen C', '3456789', '9876543', 'Hochiminh', '18', 'axbycz@gmail.com');
+INSERT INTO `studentmanagementsystem`.`sms1` (`id`, `namestd`, `mssv`, `phone`, `address`, `age`, `email`) VALUES ('4', 'Nguyen D', '78548965', '56984587', 'Cantho', '19', 'a1b2c3d4@gmail.com');
