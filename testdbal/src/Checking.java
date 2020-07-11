@@ -8,7 +8,7 @@ public class Checking {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/forum_zclouds", "root", "159753");
+                    "jdbc:mysql://127.0.0.1:3306/()", "root", "159753");
             //here sonoo is database name, root is username and password
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM account");
