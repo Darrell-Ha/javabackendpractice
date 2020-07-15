@@ -1,7 +1,8 @@
 package JavaBackend.buoi2.database.services;
 
-import JavaBackend.buoi2.database.models.Counter;
+import JavaBackend.buoi2.database.models.Counters;
 import JavaBackend.buoi2.database.models.LaptopEntity;
+import JavaBackend.buoi2.database.models.Statistics;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -141,19 +142,36 @@ public class LaptopServices {
 
 
     ////Thống kê số lượng máy tính của các hãng theo số lượng giảm dần Activity 41
-        ///+ Thống kê số tiền thu được  Activity 42
-    public List<Counter>getCounters_and_Statistics_byMaker(){
-        List<Counter>counters=new ArrayList<>();
+
+    public List<Statistics>getStatistics(){
+        List<Statistics>counters=new ArrayList<>();
         try{
             Statement stmt =con.createStatement();
             ResultSet rs=stmt.executeQuery("SELECT maker, SUM(sold) AS quantity,SUM(sold*price) AS totalmoney FROM laptop GROUP BY maker ORDER BY quantity DESC");
             while(rs.next()){
-                Counter counter = new Counter(rs.getString(1),rs.getInt(2),rs.getLong(3));
-                counters.add(counter);
+                Statistics statistics = new Statistics(rs.getString(1),rs.getInt(2),rs.getLong(3));
+                counters.add(statistics);
             }
 
         }catch (SQLException throwable){
             throwable.printStackTrace();
+        }
+        return counters ;
+    }
+
+    ///+ Thống kê số tiền thu được  Activity 42
+    public List<Counters>getCounter(){
+        List<Counters> counters = new ArrayList<>();
+        try{
+            Statement stmt= con.createStatement();
+            ResultSet rs= stmt.executeQuery("SELECT DISTINCT maker, count(type) FROM laptop GROUP BY maker ");
+            while (rs.next()){
+                Counters counter = new Counters(rs.getString(1),rs.getInt(2));
+                counters.add(counter);
+            }
+        }catch(SQLException Throwable){
+            Throwable.printStackTrace();
+
         }
         return counters;
     }

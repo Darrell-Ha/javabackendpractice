@@ -1,6 +1,6 @@
 package JavaBackend.buoi2.database;
 
-import JavaBackend.buoi2.database.models.Counter;
+
 import JavaBackend.buoi2.database.models.LaptopEntity;
 import JavaBackend.buoi2.database.services.LaptopServices;
 
@@ -30,9 +30,6 @@ public class Application_LapTop {
             return;
         }
         LaptopServices laptopServices=new LaptopServices(connection);
-        List<Counter> result= laptopServices.getCounters_and_Statistics_byMaker();
-        for (Counter counter: result){
-            System.out.println(counter.toString());
-        }
+
     }
 }

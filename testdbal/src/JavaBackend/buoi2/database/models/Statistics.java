@@ -1,6 +1,6 @@
 package JavaBackend.buoi2.database.models;
 
-public class Counter {
+public class Statistics {
     private String maker;
     private int quantity;
     private long money;
@@ -13,10 +13,10 @@ public class Counter {
         this.money = money;
     }
 
-    public Counter(){
+    public Statistics(){
 
     }
-    public Counter(String maker,int quantity,long money){
+    public Statistics(String maker,int quantity,long money){
         this.maker=maker;
         this.quantity=quantity;
         this.money=money;
