@@ -17,7 +17,7 @@ CREATE TABLE `store_cms_plusplus`.`laptop`(
     `screen_size` FLOAT NULL,
     `sold` INT NULL,
     `created_timestamp` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-    `last_updated_timestamp` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6));
+    `last_updated_timestamp` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6));
     
 
 -- insert master data

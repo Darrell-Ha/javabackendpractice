@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class LaptopServices {
     private Connection con;
     public LaptopServices(){
@@ -175,6 +176,57 @@ public class LaptopServices {
         }
         return counters;
     }
+    ///// tính năng thêm laptop vào db Activity 51
+    public void Check_Insert_data_into_db(){
+        List<LaptopEntity> ltett= new ArrayList<>();
+        try{
+            Statement stmt = con.createStatement();
+            String sql ="INSERT IGNORE INTO laptop (namelaptop, url, maker, type, ram, cpu, ssd, hdd, price, card, screen_resolution, screen_size, sold)" +
+                    " VALUES ('HP Pavilion Gaming 15-ec0051AX (9AV29PA)', 'https://phongvu.vn/may-tinh-xach-tay-laptop-hp-pavilion-gaming-15ec0051ax-9av29pa-amd-ryzen-7-3750h-den-s200300504.html', 'HP', 'Pavilion Gaming', " +
+                    "'8GB', 'AMD Ryzen 7 3750H', '256GB', '1TB', '24990000', 'NVIDIA GeForce GTX 1650 4GB GDDR5', '1920 x 1080', '15.6', '30')";
+            int k=stmt.executeUpdate(sql);
+            ResultSet rs =stmt.executeQuery("SELECT * FROM laptop WHERE namelaptop ='HP Pavilion Gaming 15-ec0051AX (9AV29PA)'");
+
+            while (rs.next()){
+                LaptopEntity lt= new LaptopEntity(rs.getInt(1),rs.getString(2),rs.getString(3)
+                        ,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),
+                        rs.getString(8),rs.getString(9),rs.getFloat(10),rs.getString(11),
+                        rs.getString(12),rs.getString(13),rs.getInt(14),null,null);
+                ltett.add(lt);
+            }
+        }catch (SQLException Throwable){
+            Throwable.printStackTrace();
+        }
+        for(LaptopEntity lt : ltett){
+            System.out.println(lt.toString());
+        }
+    }
+    ///// cập nhật số lượng laptop đã bán của 1 hãng -- Activity 52
+    public void Update_quantity_and_timestamp(){
+        List<LaptopEntity> ltett = new ArrayList<>();
+        try{
+            String sql="UPDATE laptop SET sold=sold+50 WHERE maker ='APPLE' AND type ='Macbook Air'";
+            Statement stmt = con.createStatement();
+            int k = stmt.executeUpdate(sql);
+            ResultSet rs = stmt.executeQuery("SELECT type,created_timestamp,last_updated_timestamp,sold FROM laptop WHERE type='Macbook Air' GROUP BY type ");
+            while(rs.next()){
+                LaptopEntity lt = new LaptopEntity();
+                lt.setType(rs.getString(1));
+                lt.setCreated_timestamp(rs.getTimestamp(2));
+                lt.setLast_updated_timestamp(rs.getTimestamp(3));
+                lt.setSold(rs.getInt(4));
+                ltett.add(lt);
+            }
+        }catch (SQLException Throwable){
+            Throwable.printStackTrace();
+        }
+        for(LaptopEntity lt:ltett){
+            System.out.println(lt.toString());
+        }
+
+    }
+
+
 
 
 }

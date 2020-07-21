@@ -30,6 +30,7 @@ public class Application_LapTop {
             return;
         }
         LaptopServices laptopServices=new LaptopServices(connection);
+        laptopServices.Update_quantity_and_timestamp();
 
     }
 }

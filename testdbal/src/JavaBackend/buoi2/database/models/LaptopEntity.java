@@ -162,7 +162,8 @@ public class LaptopEntity {
     @Override
     public String toString() {
         return "LaptopEntity{" +
-                "sold=" + sold +
+                "id=" + id +
+                ", sold=" + sold +
                 ", price=" + price +
                 ", name='" + name + '\'' +
                 ", maker='" + maker + '\'' +
@@ -174,6 +175,8 @@ public class LaptopEntity {
                 ", card='" + card + '\'' +
                 ", screen_resolution='" + screen_resolution + '\'' +
                 ", screen_size='" + screen_size + '\'' +
+                ", created_timestamp=" + created_timestamp +
+                ", last_updated_timestamp=" + last_updated_timestamp +
                 '}';
     }
 }
