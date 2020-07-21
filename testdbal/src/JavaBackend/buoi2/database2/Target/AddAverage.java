@@ -47,4 +47,14 @@ public class AddAverage {
     public void setCredits(int credits) {
         Credits = credits;
     }
+
+    @Override
+    public String toString() {
+        return "AddAverage{" +
+                "StudentID='" + StudentID + '\'' +
+                ", CourseID='" + CourseID + '\'' +
+                ", Mark=" + Mark +
+                ", Credits=" + Credits +
+                '}';
+    }
 }

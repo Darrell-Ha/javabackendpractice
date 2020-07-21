@@ -52,52 +52,63 @@ public class Work_by_Connection {
     //// Activity 53.2 Tính điểm trung bình
     public void CPA(){
         List<AddAverage> aDD= new ArrayList<>();
-        String sql="SELECT  results.StudentID,results.CourseID,results.Mark,courses.Credits FROM results,courses,students" +
+        String sql="SELECT  results.StudentID,results.CourseID,results.Mark,courses.Credits FROM results,courses " +
                 "WHERE results.CourseID = courses.CourseID";
         try {
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             while (rs.next()){
                 AddAverage addAverage= new AddAverage(rs.getString(1),rs.getString(2),rs.getDouble(3),rs.getInt(4));
-                for(AddAverage ad :aDD){
-                    if(ad.getStudentID().equals(addAverage.getStudentID()) && ad.getCourseID().equals(addAverage.getCourseID())){
-                        if(ad.getMark()<addAverage.getMark()){
-                            aDD.add(addAverage);
-                        }
-                    }else {
-                        aDD.add(addAverage);
+                aDD.add(addAverage);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        List<AddAverage> process = new ArrayList<>();
+        for (int i=0;i<aDD.size()-1;i++){
+            int index=i;
+            for (int k=i+1;k<aDD.size();k++){
+                if(aDD.get(index).getStudentID().equals(aDD.get(k).getStudentID()) && aDD.get(index).getCourseID().equals(aDD.get(k).getCourseID())){
+                    if(aDD.get(index).getMark()<aDD.get(k).getMark()){
+                        index=k;
                     }
                 }
-
             }
-        }catch (SQLException e){
-            e.printStackTrace();
+            if (!process.contains(aDD.get(index))){
+                process.add(aDD.get(index));
+            }
         }
-
+        if(!process.contains(aDD.get(aDD.size()-1).getStudentID()) && !process.contains(aDD.get(aDD.size()-1).getCourseID())){
+            process.add(aDD.get(aDD.size()-1));
+        }
+        for (AddAverage ad: process){
+            System.out.println(ad.toString());
+        }
         HashMap<String,Double> diemthi=new HashMap<>();
-        double diem=aDD.get(0).getMark()*aDD.get(0).getCredits();
-        diemthi.put(aDD.get(0).getStudentID(),diem);
-        for(int i=1;i<aDD.size();i++){
-            if(!aDD.get(i).getStudentID().equals(aDD.get(i-1).getStudentID())){
+        double diem=process.get(0).getMark()*process.get(0).getCredits();
+        diemthi.put(process.get(0).getStudentID(),diem);
+        int credits =process.get(0).getCredits();
+        for(int i=1;i<process.size();i++){
+            if(!process.get(i).getStudentID().equals(process.get(i-1).getStudentID())){
+                diemthi.put(process.get(i-1).getStudentID(),diem/credits);
                 diem=0;
+                credits=0;
             }
-            diem+=aDD.get(i).getMark()*aDD.get(i).getCredits();
-            diemthi.put(aDD.get(i).getStudentID(),diem);
+            diem+=process.get(i).getMark()*process.get(i).getCredits();
+            credits+=process.get(i).getCredits();
+            diemthi.put(process.get(i).getStudentID(),diem);
         }
+        diemthi.put(process.get(process.size()-1).getStudentID(),diem/credits);
         try{
             Statement stmt = con.createStatement();
-            for (int i=0;i<diemthi.size();i++){
-                String sql_update="UPDATE students SET AverageScore = "+diemthi.values()+" WHERE StudentID='"+diemthi.keySet()+"'";
-                int k=stmt.executeUpdate(sql_update);
+            for (String key:diemthi.keySet()){
+                String sql_update="UPDATE students SET AverageScore = "+diemthi.get(key)+" WHERE StudentID='"+key+"'";
+                stmt.executeUpdate(sql_update);
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
-
-
-
-
-
+        
         }
 
     }
