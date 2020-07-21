@@ -25,6 +25,6 @@ public class Main_manage {
             return;
         }
         Work_by_Connection wbc = new Work_by_Connection(connection);
-        wbc.Update_NUMBER_NoOfStudents();
+        wbc.CPA();
     }
 }
