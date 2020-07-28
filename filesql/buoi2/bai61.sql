@@ -1,0 +1,110 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb1
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema mydb1
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb1` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `mydb1` ;
+
+-- -----------------------------------------------------
+-- Table `mydb1`.`PRODUCT`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb1`.`PRODUCT` (
+  `ID` VARCHAR(10) NOT NULL,
+  `NAME` VARCHAR(20) NOT NULL,
+  `UNIT_COUNT` VARCHAR(10) NOT NULL,
+  `PRICE_PER_UNIT` FLOAT NOT NULL,
+  `QUANTITY_NOW` INT NOT NULL,
+  PRIMARY KEY (`ID`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `mydb1`.`IMPORT`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb1`.`IMPORT` (
+  `ID_BILL` INT NOT NULL,
+  `SUPPLIER` VARCHAR(45) NOT NULL,
+  `INPUT_TIME` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
+  PRIMARY KEY (`ID_BILL`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `mydb1`.`IMPORTING_INFOR`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb1`.`IMPORTING_INFOR` (
+  `QUANTITY` INT NOT NULL,
+  `PRICE_PER_UNIT` FLOAT NOT NULL,
+  `PRODUCT_ID` VARCHAR(10) NOT NULL,
+  `IMPORT_ID_BILL` INT NOT NULL,
+  PRIMARY KEY (`PRODUCT_ID`, `IMPORT_ID_BILL`),
+  INDEX `fk_IMPORTING_INFOR_IMPORT1_idx` (`IMPORT_ID_BILL` ASC) VISIBLE,
+  CONSTRAINT `fk_IMPORTING_INFOR_PRODUCT`
+    FOREIGN KEY (`PRODUCT_ID`)
+    REFERENCES `mydb1`.`PRODUCT` (`ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_IMPORTING_INFOR_IMPORT1`
+    FOREIGN KEY (`IMPORT_ID_BILL`)
+    REFERENCES `mydb1`.`IMPORT` (`ID_BILL`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `mydb1`.`CUSTOMER`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb1`.`CUSTOMER` (
+  `ID_RECEIPT` INT NOT NULL,
+  `NAME` VARCHAR(20) NOT NULL,
+  `TIME_BUY` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  PRIMARY KEY (`ID_RECEIPT`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `mydb1`.`SELLING_INFOR`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb1`.`SELLING_INFOR` (
+  `QUANTITY` INT NOT NULL,
+  `VALUE_PER_UNIT` FLOAT NOT NULL,
+  `PRODUCT_ID` VARCHAR(10) NOT NULL,
+  `CUSTOMER_ID_RECEIPT` INT NOT NULL,
+  PRIMARY KEY (`PRODUCT_ID`, `CUSTOMER_ID_RECEIPT`),
+  INDEX `fk_SELLING_INFOR_CUSTOMER1_idx` (`CUSTOMER_ID_RECEIPT` ASC) VISIBLE,
+  CONSTRAINT `fk_SELLING_INFOR_PRODUCT1`
+    FOREIGN KEY (`PRODUCT_ID`)
+    REFERENCES `mydb1`.`PRODUCT` (`ID`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_SELLING_INFOR_CUSTOMER1`
+    FOREIGN KEY (`CUSTOMER_ID_RECEIPT`)
+    REFERENCES `mydb1`.`CUSTOMER` (`ID_RECEIPT`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
